@@ -14,17 +14,17 @@
         <!-- Example A -->
         <div>
             <p>Example A</p>
-            <span data-scene="cube" class="w-[400px] h-[200px]"></span>
+            <span data-scene="cube" class="w-[400px] lg:w-[600px] h-[200px] lg:h-[300px]"></span>
         </div>
 
         <div>
             <p>Example B</p>
-            <span data-scene="diamond" class="w-[400px] h-[200px]"></span>
+            <span data-scene="diamond" class="w-[400px] lg:w-[600px] h-[200px] lg:h-[300px]"></span>
         </div>
 
         <div>
             <p>Example C</p>
-            <span data-scene="three-diamonds" class="w-[400px] h-[200px]"></span>
+            <span data-scene="three-diamonds" class="w-[400px] lg:w-[600px] h-[200px] lg:h-[300px]"></span>
         </div>
     </div>
 </body>

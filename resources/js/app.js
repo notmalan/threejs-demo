@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js'
 
 const canvas = document.createElement('canvas')
+
 const scenes = []
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
@@ -13,8 +14,7 @@ renderer.setScissorTest(true)
 const addScene = (scene, sceneRenderFunction) => {
     const sceneContext = document.createElement('canvas').getContext('2d')
     scene.append(sceneContext.canvas)
-    const canvasBounds = scene.getBoundingClientRect()
-
+    let canvasBounds = scene.getBoundingClientRect()
     scenes.push({ scene, canvasBounds, sceneContext, sceneRenderFunction })
 }
 
@@ -22,7 +22,6 @@ const addScene = (scene, sceneRenderFunction) => {
 const createScene = (objects, camera, lighting = false) => {
     const scene = new THREE.Scene()
     scene.add(objects)
-
     scene.add(camera)
     if(lighting) {
         scene.add(lighting)
@@ -30,7 +29,7 @@ const createScene = (objects, camera, lighting = false) => {
     return { scene }
 }
 
-// Step 2/5: apply instructions stored for setting up a scene, then return a scene render function
+// Step 2/5: apply instructions for setting up each scene, returns a scene render function
 const sceneInitInstructions = {
     'cube': (htmlElement) => {
 
@@ -143,11 +142,14 @@ const sceneInitInstructions = {
 }
 
 // Step 1/5: query the HTML for scene elements
-document.querySelectorAll('[data-scene]').forEach((htmlElement) => {
+document.querySelectorAll('[data-scene]').forEach((htmlElement, index) => {
     const sceneName = htmlElement.dataset.scene
     const sceneInitFunction = sceneInitInstructions[sceneName]
     const sceneRenderFunction = sceneInitFunction(htmlElement)
     addScene(htmlElement, sceneRenderFunction)
+    window.addEventListener('resize', () => {
+        scenes[index].canvasBounds = htmlElement.getBoundingClientRect()
+    })
 })
 
 // Step 5/5: Render
@@ -174,14 +176,8 @@ const tick = () => {
             sceneContext.globalCompositeOperation = 'copy'
             sceneContext.drawImage(
                 parentCanvas,
-                0,
-                parentCanvas.height - canvasBounds.height,
-                canvasBounds.width,
-                canvasBounds.height,
-                0,
-                0,
-                canvasBounds.width,
-                canvasBounds.height
+                0, parentCanvas.height - canvasBounds.height, canvasBounds.width, canvasBounds.height, //src rect
+                0, 0, canvasBounds.width, canvasBounds.height // dst rect
             )
         }
     }
