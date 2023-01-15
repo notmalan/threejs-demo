@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/sass/app.scss')
     @vite('resources/css/app.css')
-    @vite('resources/js/app.js')
+    {{-- @vite('resources/js/app.js') --}}
+    @vite('resources/js/index.js')
 </head>
 
 <body class="">
