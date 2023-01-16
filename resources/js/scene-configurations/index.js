@@ -5,6 +5,8 @@ import { createScene, renderer } from '../app.js'
 
 const sceneInitInstructions = {
     'cube': (htmlElement) => {
+        const lights = []
+
         const geometry = new THREE.BoxGeometry(1,1,1)
         const material = new THREE.MeshPhongMaterial()
         const mesh = new THREE.Mesh(geometry, material)
@@ -14,14 +16,15 @@ const sceneInitInstructions = {
         camera.position.set(0, 1, 2)
         camera.lookAt(mesh.position)
 
-        const lighting = new THREE.AmbientLight(0x404040)
-        lighting.position.set(-1, 2, 4)
+        const ambientLight = new THREE.AmbientLight(0x404040)
+        ambientLight.position.set(-1, 2, 4)
+        lights.push(ambientLight)
 
         const controls = new TrackballControls(camera, htmlElement)
         controls.noZoom = true
         controls.noPan = true
 
-        const { scene } = createScene(mesh , camera, lighting, controls)
+        const { scene } = createScene(mesh , camera, lights, controls)
 
         return (elapsedTime, canvasBounds) => {
             mesh.rotation.y = elapsedTime * 0.3
@@ -33,6 +36,8 @@ const sceneInitInstructions = {
         }
     },
     'diamond': (htmlElement) => {
+        const lights = []
+
         const geometry = new THREE.SphereGeometry(.8, 4, 2)
         const material = new THREE.MeshPhongMaterial()
         const mesh = new THREE.Mesh(geometry, material)
@@ -43,14 +48,15 @@ const sceneInitInstructions = {
         camera.position.set(0, 3, 1)
         camera.lookAt(mesh.position)
 
-        const lighting = new THREE.DirectionalLight(0xFFFFFF, 1)
-        lighting.position.set(-1, 2, 4)
+        const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1)
+        directionalLight.position.set(-1, 2, 4)
+        lights.push(directionalLight)
 
         const controls = new TrackballControls(camera, htmlElement)
         controls.noZoom = true
         controls.noPan = true
 
-        const { scene } = createScene(mesh, camera, lighting, controls)
+        const { scene } = createScene(mesh, camera, lights, controls)
 
         return (elapsedTime, canvasBounds) => {
             mesh.rotation.y = elapsedTime * 0.3
@@ -64,6 +70,7 @@ const sceneInitInstructions = {
         }
     },
     'three-diamonds': (htmlElement) => {
+        const lights = []
         const group = new THREE.Group()
         const colors = ['red', 'blue', 'green']
         const positions = [
@@ -87,14 +94,15 @@ const sceneInitInstructions = {
         camera.position.set(0, 0, 5)
         camera.lookAt(group.children[0])
 
-        const lighting = new THREE.DirectionalLight(0xFFFFFF, 1)
-        lighting.position.set(-1, 2, 4)
+        const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1)
+        directionalLight.position.set(-1, 2, 4)
+        lights.push(directionalLight)
 
         const controls = new TrackballControls(camera, htmlElement)
         controls.noZoom = true
         controls.noPan = true
 
-        const { scene } = createScene(group, camera, lighting, controls)
+        const { scene } = createScene(group, camera, lights, controls)
 
         return (elapsedTime, canvasBounds) => {
             group.rotation.y = elapsedTime * 0.5
